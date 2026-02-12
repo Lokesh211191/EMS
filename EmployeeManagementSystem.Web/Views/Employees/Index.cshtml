@@ -1,0 +1,309 @@
+@model IEnumerable<EmployeeManagementSystem.Application.DTOs.EmployeeDto>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+        color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        border-radius: 0 0 12px 12px;
+        margin: -20px -20px 30px -20px;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .search-section {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    .search-section form {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .search-section .form-group {
+        flex: 1;
+        min-width: 200px;
+        margin-bottom: 0;
+    }
+
+    .search-section label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+        font-size: 0.95rem;
+    }
+
+    .search-section .form-control {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 12px;
+        transition: all 0.3s ease;
+    }
+
+    .search-section .form-control:focus {
+        border-color: #0066cc;
+        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+
+    .search-section .btn {
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover {
+        background: #e5e7eb;
+    }
+
+    .btn-group-top {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .btn-group-top .btn {
+        flex: 1;
+    }
+
+    .employees-table {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        border-bottom: 2px solid #d1d5db;
+    }
+
+    .table thead th {
+        color: #374151;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding: 16px;
+        border: none;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    .table tbody td {
+        padding: 14px 16px;
+        vertical-align: middle;
+        color: #374151;
+    }
+
+    .employee-name {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .badge-department {
+        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .badge-role {
+        background: #dbeafe;
+        color: #0c4a6e;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .badge-salary {
+        color: #059669;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        border: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-edit {
+        background: #fbbf24;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #f59e0b;
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6b7280;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+</style>
+
+<div class="page-header container">
+    <h1><i class="fas fa-list"></i> Employee Directory</h1>
+    <p>Manage and view all employees in your organization</p>
+</div>
+
+<div class="container">
+    <!-- Add New Button -->
+    <div class="btn-group-top">
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-lg">
+            <i class="fas fa-user-plus"></i> Add New Employee
+        </a>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="search-section">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="department" class="form-label">Department</label>
+                <input type="text" name="department" class="form-control" placeholder="Filter by department" 
+                       value="@ViewData["Department"]" id="department" />
+            </div>
+            <div class="col-md-4">
+                <label for="role" class="form-label">Role</label>
+                <input type="text" name="role" class="form-control" placeholder="Filter by role" 
+                       value="@ViewData["Role"]" id="role" />
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-50">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary w-50">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Employees Table -->
+    @if (Model.Any())
+    {
+        <div class="employees-table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-user"></i> Name</th>
+                        <th><i class="fas fa-envelope"></i> Email</th>
+                        <th><i class="fas fa-building"></i> Department</th>
+                        <th><i class="fas fa-briefcase"></i> Role</th>
+                        <th><i class="fas fa-calendar"></i> Hire Date</th>
+                        <th><i class="fas fa-dollar-sign"></i> Salary</th>
+                        <th><i class="fas fa-cog"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td class="employee-name">@employee.Name</td>
+                            <td>@employee.Email</td>
+                            <td><span class="badge-department">@employee.Department</span></td>
+                            <td><span class="badge-role">@employee.Role</span></td>
+                            <td>@employee.HireDate.ToString("MMM dd, yyyy")</td>
+                            <td class="badge-salary">$@employee.Salary.ToString("N2")</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="@Url.Action("Edit", new { id = employee.Id })" class="btn btn-edit btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <form method="post" action="@Url.Action("Delete", new { id = employee.Id })" 
+                                          style="display: inline;" 
+                                          onsubmit="return confirm('Delete this employee?');">
+                                        <button type="submit" class="btn btn-delete btn-sm">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h3>No employees found</h3>
+            <p>Try adjusting your search criteria or add a new employee.</p>
+        </div>
+    }
+</div>

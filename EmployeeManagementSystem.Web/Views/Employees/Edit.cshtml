@@ -1,0 +1,195 @@
+@model EmployeeManagementSystem.Application.DTOs.EmployeeDto
+
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-header {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .form-header h1 {
+        color: #1f2937;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .form-header p {
+        color: #6b7280;
+    }
+
+    .employee-info {
+        background: #f0f9ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #0066cc;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        color: #1e40af;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-control {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #0066cc;
+        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        outline: none;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover {
+        background: #e5e7eb;
+    }
+
+    .required::after {
+        content: ' *';
+        color: #ef4444;
+    }
+
+    .employee-badge {
+        display: inline-block;
+        background: #dbeafe;
+        color: #0c4a6e;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+</style>
+
+<div class="container mt-5 mb-5">
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fas fa-edit"></i> Edit Employee</h1>
+            <p>Update employee information</p>
+        </div>
+
+        <div class="employee-info">
+            <i class="fas fa-info-circle"></i> Employee ID: <strong>#@Model.Id</strong>
+        </div>
+
+        <form method="post" action="@Url.Action("Edit")">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="form-group">
+                <label for="name" class="form-label">
+                    <i class="fas fa-user"></i>
+                    <span class="required">Full Name</span>
+                </label>
+                <input type="text" class="form-control" id="name" name="name" value="@Model.Name" placeholder="Enter full name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    <i class="fas fa-envelope"></i>
+                    <span class="required">Email Address</span>
+                </label>
+                <input type="email" class="form-control" id="email" name="email" value="@Model.Email" placeholder="Enter email address" required />
+            </div>
+
+            <div class="form-group">
+                <label for="department" class="form-label">
+                    <i class="fas fa-building"></i>
+                    <span class="required">Department</span>
+                </label>
+                <input type="text" class="form-control" id="department" name="department" value="@Model.Department" placeholder="e.g., Information Technology" required />
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="form-label">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="required">Role</span>
+                </label>
+                <input type="text" class="form-control" id="role" name="role" value="@Model.Role" placeholder="e.g., Senior Developer" required />
+            </div>
+
+            <div class="form-group">
+                <label for="hireDate" class="form-label">
+                    <i class="fas fa-calendar"></i>
+                    <span class="required">Hire Date</span>
+                </label>
+                <input type="date" class="form-control" id="hireDate" name="hireDate" value="@Model.HireDate.ToString("yyyy-MM-dd")" required />
+            </div>
+
+            <div class="form-group">
+                <label for="salary" class="form-label">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span class="required">Salary</span>
+                </label>
+                <input type="number" step="0.01" class="form-control" id="salary" name="salary" value="@Model.Salary" placeholder="Enter salary amount" required />
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Employee
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
