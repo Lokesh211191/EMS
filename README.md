@@ -103,5 +103,8 @@ dotnet test
 - Comprehensive logging
 - Unit and integration test coverage
 
+## Design Documents
+- [Real-Time Chat Feature](DESIGN_REALTIME_CHAT.md) - Technical design for WebSocket-based chat with E2E encryption
+
 ## License
 MIT
